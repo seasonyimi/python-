@@ -1,0 +1,20 @@
+d = {'Michael':95,'Bob':85,'Tracy':70,'Michael':10}
+print(d['Michael'])
+d['Bob'] = 60
+print(d['Bob'])
+# 判断key值是否存在
+print('Tracy' in d)
+# dict 中 {'key':values} key是不能变的
+# set和dict类似，但set中key不能重复,没有value
+# 显示按顺序不是表示set排序。只是告诉你有这几个元素
+s = set([1,3,2,1])
+print(s)
+s.add(4)
+print(s)
+s.remove(4)
+print(s)
+# 可看作数字意义上的无序和无重复元素集合，可进行交集和并集
+s1 = set([1,2,3])
+s2 = set([2,3,4])
+print(s1 & s2)
+print(s1 | s2)
