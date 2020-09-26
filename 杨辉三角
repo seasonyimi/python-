@@ -1,0 +1,16 @@
+def triangles():
+    L=[1]
+    width=6*len( L[:len(L)])
+    while True:
+        yield L[:len(L)]
+        # 为数组最后加一位
+        L.append(0)
+        L = [L[i-1] + L[i] for i in range(len(L))]
+n=0
+results=[]
+for t in triangles():
+    print(t)
+    results.append(t)
+    n=n+1
+    if n == 5 :
+        break
