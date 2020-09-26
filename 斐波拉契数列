@@ -1,0 +1,28 @@
+'''
+比如，著名的斐波拉契数列（Fibonacci），除第一个和第二个数外，任意一个数都可由前两个数相加得到：
+1, 1, 2, 3, 5, 8, 13, 21, 34, ...
+'''
+def fid(max):
+    n,a,b = 0, 0, 1
+    while n < max:
+        print(b)
+        '''
+        下列相当于：
+        t = (b, a + b) # t是一个tuple
+        a = t[0]
+        b = t[1]
+       '''
+        a,b = b, a+b
+        n = n + 1
+    return 'done'
+fid(6)
+#斐波拉契数列（Fibonacci）生成器
+def fid(max):
+    n,a,b = 0, 0, 1
+    while n < max:
+        yield b
+        a,b = b, a+b
+        n = n + 1
+    return 'done'
+for i in fid(5):
+    print(i)
