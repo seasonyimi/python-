@@ -1,0 +1,15 @@
+# 这种情况会发生栈溢出
+def fact(n):
+    if n==1:
+        return 1
+    return n * fact(n-1)
+print(fact(1))
+print(fact(5))
+# 优化方法
+# 虽然改成了尾递归，但还是会溢出。这方面没有优化
+def fact(n):
+    return fact_iter(n,1)
+def fact_iter(num,product):
+    if num == 1:
+        return product
+    return fact_iter(num - 1, num * product)
