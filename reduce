@@ -9,6 +9,7 @@ map()是将传入的函数依次作用到序列的每个元素，每个元素都
 reduce()是将传人的函数作用在序列的第一个元素得到结果后，把这个结果继续与下一个元素作用（累积计算），
 最终结果是所有的元素相互作用的结果。
 
+------------------------------------------------------------------------------------------------------------------------
 
 from functools import reduce
 # Python提供的sum()函数可以接受一个list并求和，请编写一个prod()函数，可以接受一个list并利用reduce()求积：
@@ -16,6 +17,32 @@ def prod(L):
     return reduce(lambda x, y : x * y, L)
 print('3 * 5 * 7 * 9 =', prod([3, 5, 7, 9]))
 if prod([3, 5, 7, 9]) == 945:
+    print('测试成功!')
+else:
+    print('测试失败!')
+    
+    
+    from functools import reduce
+# 利用map和reduce编写一个str2float函数，把字符串'123.456'转换成浮点数123.456
+def str2float(s):
+    def f(x,y):
+        return 10*x+y
+
+    def get_dot(s):
+        dot = [i for i in range(len(s)) if s[i]=='.']
+        if len(dot)>0:
+            return dot[0]
+        else:
+            return len(s)
+    return reduce(f,map(int,s[:get_dot(s)]))+10**(-(len(s)-get_dot(s)-1))*reduce(f,map(int,s[get_dot(s)+1:]))
+
+# 思路理解：
+# reduce(f,map(int,s[:get_dot(s)]))这是将小数点前的字符转为int，正常输出。
+# 10**(-(len(s)-get_dot(s)-1))根据get_dot(s)变化按顺序输出小数点后面的数，比如1234.5678，len()=9，get_doc()=4,有四位小数
+# reduce(f,map(int,s[get_dot(s)+1:]))去掉整数位进行的计算
+
+print('str2float(\'1234.4567\') =', str2float('1234.4567'))
+if abs(str2float('123.456') - 123.456) < 0.00001:
     print('测试成功!')
 else:
     print('测试失败!')
