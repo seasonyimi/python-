@@ -1,0 +1,46 @@
+#filter()过滤序列，接收一个函数和一个序列，和map类似
+# 将传入的函数依次作用于每个元素，然后根据返回值是true和false决定去留
+
+# 例1：在一个list中，删除偶数，只保留奇数
+def is_odd(n):
+    return n%2 ==1
+print(list(filter(is_odd,[1,2,3,4,5,6,7,8,9,10])))
+# 例2：在一个list中，删除奇数，只保留偶数
+def is_even(n):
+    return n%2 == 0
+print(list(filter(is_even,[1,2,3,4,5,6,7,8,9,10])))
+# 例3：把一个序列的空字符串删掉
+def not_empty(s):
+    return s and s.strip()
+print(list(filter(not_empty, ['A', '', 'B', ' ', 'C', '  '])))
+# 例4：求素数
+'''计算素数的一个方法是埃氏筛法，它的算法理解起来非常简单：
+2, 3, 4(去), 5, 6(去), 7, 8(去), 9(去), 10(去), 11, 12(去), 13, 14(去), 15(去), 16(去), 17, 18(去), 19, 20(去), ...
+首先，列出从2开始的所有自然数，构造一个序列：
+取序列的第一个数2，它一定是素数，然后用2把序列的2的倍数筛掉：
+取新序列的第一个数3，它一定是素数，然后用3把序列的3的倍数筛掉：
+取新序列的第一个数5，然后用5把序列的5的倍数筛掉：
+不断筛下去，就可以得到所有的素数。'''
+# 先构建一个3开始的奇数序列
+def _odd_iter():
+    n = 1
+    while True:
+        n = n + 2
+        yield n
+# 定义一个筛选函数
+def _not_divisiable(n):
+    return lambda x: x % n > 0
+# 定义一个生成器，不断返回下一个素数
+def primes():
+    yield 2
+    it = _odd_iter() #初始化序列
+    while True:
+        n = next(it) #返回序列的第一个数
+        yield n
+        it = filter(_not_divisiable(n),it) #构造新序列
+#打印100以内素数
+for  n in primes():
+    if n < 1000:
+        print(n)
+    else:
+        break
