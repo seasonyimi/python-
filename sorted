@@ -1,0 +1,21 @@
+# 数组排序
+print(sorted([36,5,-12,9,-21]))
+print(sorted([36,5,-12,9,-21],key=abs))
+# 字符串排序,大写字母顺序大于小写，由于ASCII
+print(sorted(['bob','about','Zoo','Credit']))
+# 忽略大小写a就前面了
+print(sorted(['bob','about','Zoo','Credit'],key=str.lower))
+# 反向排序
+print(sorted(['bob','about','Zoo','Credit'],key=str.lower,reverse=True))
+# 例子
+L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+# 根据名字排序
+def by_name(t):
+    return t[0].lower()
+L2 = sorted(L, key=by_name)
+print(L2)
+# 根据成绩从高到低排序
+def by_score(t):
+    return t[1]
+L3 = sorted(L,key=by_score,reverse=True)
+print(L3)
