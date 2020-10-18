@@ -95,3 +95,21 @@ if f != 33:
     print('测试失败!')
 elif s != 7986:
     print('测试失败!')
+
+    
+# 练习2
+# 请编写一个decorator，能在函数调用的前后打印出'begin call'和'end call'的日志
+import functools,time
+def log(func):
+    @functools.wraps(func)
+    def wrapper(*args,**kw):
+        print('begin all')
+        a = func(*args,**kw)
+        print('end call')
+        return a
+    return wrapper
+@log
+def now():
+    print(time.strftime('%Y-%m-%d:%H-%M-%S',time.localtime(time.time())))
+f = now()
+print(f)    
