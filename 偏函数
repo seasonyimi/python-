@@ -1,0 +1,24 @@
+# 偏函数
+print(int('12345'))
+print(int('12345',base=8))
+print(int('12345',base=16))
+print(int('12345',16))
+print(int('1001',base=2))
+# 若大量需要转化，写成函数
+def int2(x,base=2):
+    return int(x,base)
+def int8(x,base=8):
+    return int(x,base)
+def int16(x,base=16):
+    return int(x,base)
+print(int2('1111'))
+print(int8('1111'))
+print(int16('1111'))
+# 利用functools
+import functools
+int2 = functools.partial(int,base=2)
+int8 = functools.partial(int,base=8)
+int16 = functools.partial(int,base=16)
+print(int2('1111'))
+print(int8('1111'))
+print(int16('1111'))
