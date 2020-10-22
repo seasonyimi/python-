@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+
+class Student(object):
+#如何不让外界改变实例的属性：属性名称前加__
+    def __init__(self,name,score):
+        self.__name=name
+        self.__score=score
+    def print_score(self):
+        print('%s:%s' %(self.__name,self.__score))
+    # 如果又改注意想让别人调用了，怎么办
+    def get_name(self):
+        return self.__name
+    def get_score(self):
+        return  self.__score
+#   如何开放修改
+    def set_score(self,score):
+        self.__score = score
+        return score
+lisa = Student('Lisa',55)
+mike = Student('Mike',85)
+rose = Student('Rose',90)
+#当name和score因为私有不能调用情况
+print(lisa.print_score())
+print(mike.print_score())
+print(rose.print_score())
+#当name和score开放调用
+print(lisa.get_name(),lisa.get_score())
+print(mike.get_name(),mike.get_score())
+print(rose.get_name(),rose.get_score())
+#当score开放修改
+print("------------------------------------")
+print(lisa.get_name(),lisa.set_score('65'))
+#注意点！！！！！
+# 变量名类似__name__的，是特殊变量，特殊变量是可以访问的
+# 看到变量名类似_name的，意思为“虽然我可以被访问，但请把我似为私有变量，不要随意访问”
+# 不能访问__name是因为变成了_Student__name，你要是访问_Student__name还是可以的
+print('*********************')
+print(lisa._Student__name,lisa._Student__score)
