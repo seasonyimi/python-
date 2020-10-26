@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+# 获取对象信息
+print(dir('ABC'))
+print(len('ABC'))
+class MyObject(object):
+    def __init__(self):
+        self.x = 9
+    def power(self):
+        return self.x*self.x
+obj = MyObject()
+print(hasattr(obj,'x')) #有属性x嘛
+print(hasattr(obj,'y')) #有属性y嘛
+setattr(obj,'y',19)  #设置属性y
+print(hasattr(obj,'y')) #有属性y嘛
+print(getattr(obj,'y'))  #获取属性y
+
+def readImage(fp):
+    if hasattr(fp,'read'):
+        return readImage(fp)
+    return  None
+print(readImage(1))
