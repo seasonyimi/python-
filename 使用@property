@@ -17,3 +17,37 @@ s1.set_score(1.2)
 print(s1.get_score())
 s.set_score(3333)
 print(s.set_score())
+
+
+# 用property装饰器限制score输入内容
+class Student(object):
+    @property   #把get_score方法变成属性
+    # def get_score(self):
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self,value):  #同
+        if not isinstance(value,int):
+            raise ValueError('score must be an integer!')
+        if value < 0 or value >100:
+            raise  ValueError('score must be 0-100')
+        self._score = value
+
+    @property
+    def birth(self):
+        return self._birth
+    @birth.setter
+    def birth(self,value):
+        self._birth = value
+    @property
+    def age(self):
+        return 2020-self._birth
+
+s = Student()
+s.score = 60    #实际转化为s.set_score(60)
+print(s.score)  #实际转化为s.get_score(60)
+# s.score = 999 #报错
+
+s.birth=1987
+print(s.age)
