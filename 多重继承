@@ -1,0 +1,36 @@
+# 多重继承
+class Animal(object):
+#大类
+class Mammal(Animal):
+    pass
+class Bird(Animal):
+    pass
+
+#各种动物
+# class Dog(Mammal):
+#     pass
+# class Bat(Mammal):
+#     pass
+# class Ostrich(Bird):
+#     pass
+# class Parrot(Bird):
+#     pass
+
+# 功能
+class RunableMinIn(object):
+    def run(self):
+        print('running...')
+class FlyableMinIn(object):
+    def fly(self):
+        print('flying...')
+        
+#动物领取功能
+# 这种设计称其为MinIn
+class Dog(Mammal,RunableMinIn):
+    pass
+class Bat(Mammal,FlyableMinIn):
+    pass
+class Ostrich(Bird,FlyableMinIn):
+    pass
+class Parrot(Bird,RunableMinIn):
+    pass
