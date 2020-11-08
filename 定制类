@@ -1,0 +1,109 @@
+# __str__返回用户看的字符
+# 这样打印出是一串
+class Student(object):
+    def __init__(self,name):
+        self.name = name
+print(Student('rose'))
+# 利用__str__打印出字符串
+class Teacher(object):
+    def __init__(self,name):
+        self.name = name
+    def __str__(self):
+        return 'Student object (name: %s)' %self.name
+    # 这种偷懒可以让开发者和用户显示一样
+    # __repr__ = __str__
+print(Teacher('mike'))
+# s返回的是__repr__()，是程序开发者看到的字符串。经过__str__的是返回用户看到的
+s = Student('jose')
+print(s)
+
+# __iter__返回一个迭代对象。比如for...in...的场景
+class Fib(object):
+    def __init__(self):
+        self.a,self.b = 0,1 #初始化计数器a,b
+    def __iter__(self):
+        return self #实例本身就是迭代对象，故返回自己
+    def __next__(self):
+        self.a,self.b = self.b , self.a+self.b #计算下一个值
+        if self.a > 100: #退出条件
+            raise StopIteration()
+        return self.a   #返回下一个值
+for i in Fib():
+    print(i)
+
+#__getitem__ 取迭代函数中的某一个数，这个__iter__无法做到
+#原版
+'''class Fib1(object):
+    def __getitem__(self, n):
+        a,b = 1,1
+        for x in range(n):
+            a,b = b,a+b
+        return a
+x = Fib1()
+print('\n',x[5])
+# getitem无法切片使用
+# print('getitem切片：',x[2:3])'''
+#改版
+class Fib1(object):
+    def __getitem__(self,n):
+        if isinstance(n,int):
+            a,b = 1,1
+            for x in range(n):
+                a,b = b,a+b
+            return a
+        if isinstance(n,slice): #如果n是切片
+            start = n.start
+            stop = n.stop
+            if start is None:
+                start = 0
+            a,b =1,1
+            L = []
+            for x in range(stop):
+                if x >= start:
+                    L.append(a)
+                    a,b=b,a+b
+            return L
+x = Fib1()
+print(x[0])
+print(x[0:5])
+print(x[:10])
+print(x[1:10])
+
+#__getattr__ 当调用属性不存在时，用此返回信息
+class Student1(object):
+    def __init__(self):
+        self.name = 'mike'
+    def __getattr__(self, attr):
+        if attr=='score':
+            return 99
+        if attr=='age':
+            return lambda :25
+s1 = Student1()
+print(s1.name)
+print(s1.score)
+print(s1.age)
+print(s1.abc)  #存在getattr的方法中，没有的属性，一律返回None，不会报错
+class Chain(object):
+    def __init__(self,path=''):
+        self._path = path
+    def __getattr__(self, path):
+        return Chain('%s/%s' %(self._path,path))
+    def __str__(self):
+        return self._path
+    __repr__ = __str__
+print(Chain().status.user.timeline.list)
+
+#__call__() 直接在实例本身调用,参数也可以
+class Student2(object):
+    def __init__(self,name):
+        self.name = name
+    def __call__(self):
+        print('My name is: %s'% self.name)
+s2 = Student2('tom')
+print(s2())
+print("判断一个调用对象是否是Callable对象:")
+print(callable(None))
+print(callable('str'))
+print(callable([1,2,3]))
+print(callable(max))
+print(callable(Student2))
