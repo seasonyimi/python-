@@ -40,3 +40,25 @@ def main():
         print('finally...')
 main()
 print('END')
+
+
+#不同错误捕获
+#常见错误类型和继承关系：https://docs.python.org/3/library/exceptions.html#exception-hierarchy
+def foo(s):
+    return 10 / int(s)
+def bar(s):
+    return foo(s)*2
+def main():
+    try:
+        print('try...')
+        bar('1.1')
+    except ValueError as e:  #捕获值类型错误
+        print('ValueError:',e)
+    except ZeroDivisionError as e:  #捕获值不能为0错误
+        print('ZeroDivisionError:',e)
+    else:
+        print('no error')
+    finally:
+        print('finally...')
+main()
+print('END')
