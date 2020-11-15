@@ -24,3 +24,19 @@ def main():
         logging.exception(e)
 main()
 print('END')
+
+#try...except捕获错误
+
+def foo(s):
+    return 10 / int(s)
+def bar(s):
+    return foo(s)*2
+def main():
+    try:
+        bar('0')
+    except Exception as e:  #捕获错误
+        print('Error:',e)
+    finally:
+        print('finally...')
+main()
+print('END')
