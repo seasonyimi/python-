@@ -1,0 +1,11 @@
+#调用栈
+#如果错误没有被捕获，就会一直往上抛，最后被python解释器捕获，答应一个错误信息
+def foo(s):
+    return 10 / int(s)
+def bar(s):
+    return foo(s)*2
+def main():
+    bar('0')
+
+print(main())
+
