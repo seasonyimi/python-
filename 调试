@@ -1,0 +1,14 @@
+#调试
+import logging
+logging.basicConfig(level=logging.INFO)  #有INFO DEBUG WARNING ERROR几个级别
+import pdb
+def fool(s):
+    n=int(s)
+    # print('>>> n=%d' %n)  #调试用print运行结果会产生很多垃圾信息
+    # assert n != 0,'n is zero!'  #和print一样，运行结果到处都是assert  #但是，如果你跑命令，可以python -o eerr.py关掉
+    # logging.info('n = %d' % n)   #优选
+    pdb.set_trace()    #设置一个断点进行调控
+    return 10/n
+def main():
+    fool('0')
+main()
