@@ -1,0 +1,72 @@
+test2.py
+# -*- coding: utf-8 -*-
+
+class Dict(dict):
+    def __init__(self,**kw):
+        super().__init__(**kw)
+    def __getattr__(self, key):
+        try:
+            return self[key]
+        except KeyError:
+            raise AttributeError(r"'Dict' object has no attribute '%s'"%key)
+    def __setattr__(self, key, value):
+        self[key]=value
+
+# d = Dict(a=1,b=2)
+# print(d['a'])
+# print(d.a)
+# print(d.values())
+
+
+test3.py
+import unittest
+from test2 import Dict
+#测试驱动开发 TDD：Test-Drivion Development
+
+class TestDict(unittest.TestCase):
+    # 以test开头为测试方法
+    def test_init(self):
+        d = Dict(a=1,b='test')
+        self.assertEqual(d.a,1)
+        self.assertEqual(d.b,'test')
+        self.assertTrue(isinstance(d,dict))
+
+    def test_key(self):                 #d.key
+        d = Dict()
+        d['key'] = 'value'
+        self.assertTrue('key' in d)
+        self.assertEqual(d.key,'value')
+    def test_attr(self):                     #d['key']
+        d = Dict()
+        d.key = 'value'
+        self.assertTrue('key' in d)
+        self.assertEqual(d['key'],'value')
+
+    def test_keyerror(self):
+        d = Dict()
+        with self.assertRaises(KeyError):   #断言异常d['a']
+            value = d['empty']
+
+    def test_attrerror(self):
+        d = Dict()
+        with self.assertRaises(AttributeError): #断言异常d.a
+            value = d.empty
+
+    @classmethod
+    def setUpClass(cls):
+        print('最开始执行')
+    def setUp(self):
+        print('每调用一个方法前执行')
+    def tearDown(self):
+        print('每调用一个方法后执行')
+    @classmethod
+    def tearDownClass(cls):
+        print('最后执行')
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+
+练习题：
