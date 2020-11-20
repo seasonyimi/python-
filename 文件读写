@@ -1,0 +1,33 @@
+#文件读写
+#读取后关闭，方法一
+try:
+    f = open(r'D:\BaiduNetdiskDownload\1.txt','r')
+    for line in f.readline():
+        print(line.strip())
+finally:
+    if f:
+        f.close()
+#读取后关闭，方法二,with可以在读完后关闭
+with open(r'D:\BaiduNetdiskDownload\1.txt','r') as f:
+    # print(f.read())
+    for line in f.readline():
+        print(line.strip())   #把末尾的‘\n’删掉
+with open(r'D:\BaiduNetdiskDownload\1.txt','w') as f:
+    f.write('123')
+with open(r'D:\BaiduNetdiskDownload\1.txt','a') as f:
+    f.write('456')
+
+
+#open()里有一个read()称为file-like Object
+#读是r，二进制读是rb
+#读非UTF-8文件，如gbk
+f1 = open(r'D:\BaiduNetdiskDownload\1.txt','r',encoding='gbk')
+#忽略错误
+f2 = open(r'D:\BaiduNetdiskDownload\1.txt','r',encoding='gbk',errors='ignore')
+#写文件w
+#写二进制文件wb
+# 请将本地一个文本文件读为一个str并打印出来
+fpath = 'D:\BaiduNetdiskDownload\1.txt'
+with open(fpath,'r') as f:
+    s = f.read()
+    print(s)
