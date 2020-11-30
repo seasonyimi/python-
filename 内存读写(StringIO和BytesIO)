@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+# StringIO和BytesIO是在内存中操作str和bytes的方法，使得和读写文件具有一致的接口
+# StringIO
+# 在内存中读写（str类型）
+# getvalue方法用于获得写入后的str
+from io import StringIO
+f = StringIO('Hello!\nHi!\nGoodbye!')
+while True:
+    s = f.readline()
+    if s == '':
+        break
+    print(s.strip())
+
+# BytesIO
+# 在内存中读写（二进制类型）
+from io import BytesIO
+f = BytesIO()
+# f.write(b'\xe4\xb8\xad\xe6\x96\x87')
+f.write('中文'.encode('utf-8'))
+f.read()
+print(f)
+
+
+
+
