@@ -1,0 +1,23 @@
+import os
+print('操作系统类型：',os.name)       #nt是windows，posix是Linux unix mac OS X
+# print(os.uname())             #windows不提供
+print('环境变量：',os.environ)
+print('获取path环境的值：',os.environ.get('PATH'))
+print('查看当前目录的绝对路径:',os.path.abspath('.'))
+# 在某个目录下创建一个新目录，首先把新目标完整路径表示出来
+os.path.join(r'C:\Users\seaso\Desktop\study','testpath')
+#创建一个目录
+os.mkdir(r'C:\Users\seaso\Desktop\study\testpath')
+# 删除一个目录
+os.rmdir(r'C:\Users\seaso\Desktop\study\testpath')
+# 拆分路径，后一部分总是最后级别的目录或文件名
+print(os.path.split(r'C:\Users\seaso\Desktop\study\python.txt'))
+# 得到文件扩展名
+print(os.path.splitext(r'C:\Users\seaso\Desktop\study\python.txt'))
+#对文件重命名
+# os.rename()
+# 删除文件
+# os.remove()
+# os里没有复制，可以用shutil模板提供的copyfile()函数
+print("列出当前目录下所有的py文件:")
+print([x for x in os.listdir('.') if os.path.isfile(x) and os.path.splitext(x)[1]=='.py'])
