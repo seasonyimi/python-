@@ -21,3 +21,22 @@ print(os.path.splitext(r'C:\Users\seaso\Desktop\study\python.txt'))
 # os里没有复制，可以用shutil模板提供的copyfile()函数
 print("列出当前目录下所有的py文件:")
 print([x for x in os.listdir('.') if os.path.isfile(x) and os.path.splitext(x)[1]=='.py'])
+
+
+# 练习题
+'''
+编写一个程序，能在当前目录以及当前目录的所有子目录下查找文件名包含指定字符串的文件，并打印出相对路径。
+绝对路径表示os.path.relpath('C:\\Windows', 'C:\\')
+'''
+import os
+def search_file(path,str):
+    for x in os.listdir(path):
+        next_path=os.path.join(path,x)
+        if os.path.isfile(next_path):
+            if str in x:
+                print(os.path.relpath(next_path,p),x)
+        else:
+            search_file(next_path,str)
+p=input('输入指定当前目录：')
+str=input('输入指定字符串或字符：')
+search_file(p,str)
