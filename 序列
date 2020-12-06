@@ -1,0 +1,30 @@
+# 序列化pickle
+# 保存不太重要的数据，这样可以序列，反序列
+import json
+
+class Student(object):
+    def __init__(self,name,age,score):
+        self.name = name
+        self.age = age
+        self.score = score
+# def student2dict(std):          #转化函数
+#     return {
+#         'name':std.name,
+#         'age':std.age,
+#         'score':std.score
+#     }
+
+s = Student('Bob',20,88)
+# default可以将任意一个对象变成一个可序列为JSON的对象
+# print(json.dumps(s,default=student2dict))
+#不写转化函数的化，偷个懒，把任意class的实例变成dict
+print(json.dumps(s,default=lambda obj:obj.__dict__))
+
+
+# 练习
+# 对中文进行JSON序列化，json.dumps()提供了一个ensure_ascii参数，观察该参数对结果的影响
+import json
+obj = dict(name='小明',age=20)
+# ensure_ascii为真时中文显示成开发所看内容，为假显示为用户所看内容
+s = json.dumps(obj,ensure_ascii=True)
+print(s)
