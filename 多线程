@@ -31,6 +31,7 @@ def change_it(n):
     balance = balance + n
     balance = balance - n
 
+
 def run_thread(n):
     for i in range(2000000):
         lock.acquire()      #当多个线程同时执行lock.acquire时，只有一个线程能成功地获取锁，然后继续执行代码
