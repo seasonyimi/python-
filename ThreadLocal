@@ -1,0 +1,24 @@
+# 使用全局变量要加锁，用局部变量调用又麻烦
+#因此可以设计一个全局dict，然后以thread自身做为key获得线程对应的对象
+import threading
+# 创建全局ThreadLocal对象
+#ThreadLocal的常见用处：为每一个线程绑定一个数据链接，HTTP请求，用户身份信息等
+#ThreadLocal虽然是全局变量，但每个线程都只能读写自己线程的独立副本，互不干扰
+local_school = threading.local()   
+
+def process_student():
+    # 获取当前线程关联的Student
+    std = local_school.student
+    print('Hello,%s in %s' %(std,threading.current_thread().name))
+def process_thread(name):
+    # 绑定ThreadLocal的Student
+    local_school.student = name
+    process_student()
+
+t1 = threading.Thread(target=process_thread,args=('Alice',),name='Thread-A')
+t2 = threading.Thread(target=process_thread,args=('Bob',),name='Thread-B')
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+print('end')
