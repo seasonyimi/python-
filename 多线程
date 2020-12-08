@@ -15,3 +15,34 @@ t = threading.Thread(target=loop,name='LoopThread')
 t.start()
 t.join()
 print('thread %s ended.' % threading.current_thread().name)
+
+
+# Lock
+# 多线程同时操作一个变量会导致数据不准，所以加锁试试
+#但锁后数据虽然准确了，但只能单线程模式执行，效率降低
+#如果存在多个锁，可能会死锁。线程挂起
+import time,threading
+balance = 0 #定义一个银行存款
+lock = threading.Lock()
+
+def change_it(n):
+    #先存后取，结果应该为0
+    global balance   #若想在函数内部对函数外的变量进行操作，就需要在函数内部声明其为global
+    balance = balance + n
+    balance = balance - n
+
+def run_thread(n):
+    for i in range(2000000):
+        lock.acquire()      #当多个线程同时执行lock.acquire时，只有一个线程能成功地获取锁，然后继续执行代码
+        try:
+            change_it(n)
+        finally:
+            lock.release()
+
+t1 = threading.Thread(target=run_thread,args=(15,))
+t2 = threading.Thread(target=run_thread,args=(8,))
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+print('balance:',balance)
