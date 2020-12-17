@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+import re
+# \d 可以匹配数字
+# test = r'00\d'
+# te = '00S'
+# \w 可以匹配一个字母和数字
+# test = r'00\w\w'
+# te = '00R3'
+# . 可以匹配任意字符
+# test =r'py.'
+# te = 'pyffff'
+# * 表示任意个字符（包括0个）， + 表示至少一个字符， ？ 表示0个或1个字符，用{n}表示n个字符，用{n,m}表示n-m个字符\
+# \s 可以匹配一个空格（包括TAB等空白符），\s+表示至少一个空格
+# test = r'\d{3}\s+\d{3,5}'
+# te = '145 12345'
+# 匹配数字，字母，下划线
+test = r'[0-9a-zA-Z\_]'
+te = '01-34'
+# ^ 表示行开头， ^\d 表示必须以数字开头
+# $ 表示行结束，\d$表示数字结尾
+if re.match(test,te):
+    print('ok')
+else:
+    print('fail')
+# 切片字符串
+print('a b  c'.split(' '))   #这样无法识别连续空格
+print(re.split(r'[\s\,]+','a b  c'))   # re可识别连续的空格
+
+# 分组
+m = re.match(r'^(\d{3})-(\d{3,8})$','010-12345')
+print(m.group(0))
+print(m.group(1))
+print(m.group(2))
+
+t = '19:25:12'
+t1 = re.match(r'^(0[0-9]|1[0-9]|2[0-3]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])$',t)
+print(t1.groups())
+
+# 贪婪匹配
+# 正则匹配默认是贪婪匹配
+
+
+# 练习1
+'''
+请尝试写一个验证Email地址的正则表达式。版本一应该可以验证出类似的Email：
+someone@gmail.com
+bill.gates@microsoft.com
+'''
+import re
+def is_valid_email(addr):
+    if re.match(r'^(\w*)\.?\w*@\w*.(com|cn)$',addr):
+        return True
+    else:
+        return False
+
+# 测试:
+assert is_valid_email('someone@gmail.com')
+assert is_valid_email('bill.gates@microsoft.com')
+assert not is_valid_email('bob#example.com')
+assert not is_valid_email('mr-bob@example.com')
+print('ok')
+
+#练习2
+import re
+# 使用compile完成一次转换之后，在每次使用模式的时候就不用重复转换
+re_name_of_email = re.compile(r'^<?(\w*\s*\w*)>?\s*\w*@\w*.org$')
+def name_of_email(addr):
+    if re_name_of_email.match(addr):
+        return re_name_of_email.match(addr).group(1)
+
+# 测试:
+assert name_of_email('<Tom Paris> tom@voyager.org') == 'Tom Paris'
+assert name_of_email('tom@voyager.org') == 'tom'
+print('ok')
