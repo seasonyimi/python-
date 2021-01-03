@@ -1,0 +1,13 @@
+//shell排序
+def shellSort(nums):
+    # 将数组分割排序
+    step = len(nums) // 2
+    while step > 0:
+        for i in range(step,len(nums)):
+            while i>=step and nums[i] < nums[i-step]:
+                nums[i],nums[i-step] = nums[i-step],nums[i]
+                i -=step  #这步是为了分成两份以上的情况，比如[5,3, 4,9, 1],1首先和4比，比完之后应该再和5比，所以需要这步
+        step = step // 2
+    return nums
+list =  [5,12,9,4,6,7,1]
+print(shellSort(list))
