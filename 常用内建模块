@@ -150,3 +150,163 @@ assert not login('michael', '1234567')
 assert not login('bob', '123456')
 assert not login('alice', 'Alice2008')
 print('ok')
+
+
+#hmac 通过对比数据的哈希值验证一段数据是否有效
+import hmac
+message = b'Hello,world!'
+key = b'secret'
+h = hmac.new(key,message,digestmod='MD5')
+#如果消息很长，可以多次调用h.update(msg)
+m = h.hexdigest()
+print(m)
+# 练习
+# 将MD5+salt改成标准的hmac算法，验证用户口令
+import hmac,random
+def hmac_md5(key,s):
+    ks = hmac.new(key.encode('utf-8'),s.encode('utf-8'),digestmod='MD5')
+    key_s = ks.hexdigest()
+    return key_s
+class User(object):
+    def __init__(self,username,password):
+        self.username = username
+        self.key = ''.join([chr(random.randint(48,122)) for  i in range(20)])
+        self.password = hmac_md5(self.key,password)
+db = {
+    'michael': User('michael', '123456'),
+    'bob': User('bob', 'abc999'),
+    'alice': User('alice', 'alice2008')
+}
+def login(username,password):
+    user = db[username]
+    return user.password == hmac_md5(user.key,password)
+# 测试:
+assert login('michael', '123456')
+assert login('bob', 'abc999')
+assert login('alice', 'alice2008')
+assert not login('michael', '1234567')
+assert not login('bob', '123456')
+assert not login('alice', 'Alice2008')
+print('ok')
+
+# itertools  操作迭代对象的函数
+import itertools
+# natuals = itertools.count(1)  #count创建一个无限的迭代器，从1开始停不下来
+# for n in natuals:
+    # print(n)
+cs = itertools.cycle('ABC')  #cycle让序列无限重复
+# for c in cs:
+    # print(c)
+ns = itertools.repeat('a',2)   #repeat让元素无限循环下去，第二个参数限制重复次数
+for n in ns:
+    print(n)
+# takewhile截取itertools有限序列
+natuals = itertools.count(2)
+ns = itertools.takewhile(lambda x:x <=10,natuals)
+print(list(ns))
+# chain() 将一组迭代对象串联起来，形成一个更大的迭代器
+for c in itertools.chain('ABC','DEF') :
+    print('依次输出两个迭代器的结果：',c)
+# groupby() 将迭代器中相邻的重复元素挑出来放一起
+for key,group in itertools.groupby('AAABBbCCEEDDFFGG'):
+    print('依次输出元素，groupby作用：',key,list(group))
+# 练习
+# 利用python提供的itertools模板，计算这个序列的前N项和
+import itertools
+def pi(N):
+    ' 计算pi的值 '
+    # # step 1: 创建一个奇数序列: 1, 3, 5, 7, 9, ...
+    # # step 2: 取该序列的前N项: 1, 3, 5, 7, 9, ..., 2*N-1.
+    # step 3: 添加正负符号并用4除: 4/1, -4/3, 4/5, -4/7, 4/9, ...
+    # step 4: 求和:
+    s = 0
+    a = 1
+    for i in itertools.count(1):
+        if i > 2*N:
+            return s
+        elif i%2 == 1:
+            s += (4/i)*a
+            a = -a
+# 测试:
+print(pi(10))
+print(pi(100))
+print(pi(1000))
+print(pi(10000))
+assert 3.04 < pi(10) < 3.05
+assert 3.13 < pi(100) < 3.14
+assert 3.140 < pi(1000) < 3.141
+assert 3.1414 < pi(10000) < 3.1415
+print('ok')
+
+# contextlib
+# try...finally
+try:
+    f = open(r'D:\Download\1.txt','r')
+    print(f.read())
+finally:
+    if f:
+        f.close()
+# try...finally 可以用 with 代替
+with open(r'D:\Download\1.txt','r') as f:
+    print(f.read())
+# 实现上下文管理就可以用with
+# 上下文管理是通过 __enter__和___exit__两个方法实现
+class Query(object):
+    def __init__(self,name):
+        self.name = name
+    def __enter__(self):
+        print('Begin')
+        return self
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            print('Error')
+        else:
+            print('End')
+    def query(self):
+        print('Query info about %s...' % self.name)
+with Query('Bob') as q:
+    q.query()
+# contextmanager
+# contextlib可以简化__enter__和__exit__
+from contextlib import contextmanager
+class Query1(object):
+    def __init__(self,name):
+        self.name = name
+    def query(self):
+        print('Query1 info about %s...'% self.name)
+@contextmanager
+def create_query(name):
+    print('Begin')
+    q = Query1(name)
+    yield q
+    print('END')
+with create_query('Mark') as q:
+    q.query()
+# 在某段代码执行前后自动执行特定代码
+@contextmanager
+def tag(name):
+    print("<%s>"% name)
+    yield
+    print("<%s>"% name)
+'''
+1.with语句首先执行yield之前的语句，因此打印出<h1>；
+2.yield调用会执行with语句内部的所有语句，因此打印出hello和world；
+3.最后执行yield之后的语句，打印出</h1>
+'''
+with tag("h1"):
+    print("hello")
+    print("world")
+
+# closing  对象变成上下文对象
+from contextlib import closing
+from urllib.request import urlopen
+@contextmanager
+#closing 经过contextmanager装饰的generator
+def closing(thing):
+    try:
+        yield thing
+    finally:
+        thing.close()
+with closing(urlopen('https://www.baidu.com')) as page:
+    for line in page:
+        print(line)
