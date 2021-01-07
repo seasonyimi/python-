@@ -367,3 +367,85 @@ proxy_auth_handler.add_password('realm','host','username','password')
 opener = urllib.request.build_opener(proxy_hander,proxy_auth_handler)
 with opener.open('') as f:
     pass
+# Pillow
+from PIL import Image,ImageFilter,ImageDraw,ImageFont
+import random
+# 打开一张图片
+im = Image.open(r'C:\Users\seaso\Downloads\20201016144027192_0001.jpg')
+# 获取图像尺寸
+w,h = im.size
+print('Original image size: %sx%s' %(w,h))
+# 缩小50%
+im.thumbnail((w//2,h//2))
+print('Resize image to: %sx%s' %(w//2,h//2))
+# 保存为jpg
+im.save('thumbnail.jpg','jpeg')
+#应用模糊滤镜
+im2 = im.filter(ImageFilter.BLUR)
+im2.save('bule.jpg','jpeg')
+#随机字母
+def rndChar():
+    return chr(random.randint(65,90))
+#随机颜色1
+def rndColor1():
+    return (random.randint(64,255),random.randint(64,255),random.randint(64,255))
+# 随机颜色2
+def rndColor2():
+    return (random.randint(32,127),random.randint(32,127),random.randint(32,127),random.randint(32,127))
+#图片240*60
+width = 60*4
+height = 60
+image = Image.new('RGB',(width,height),(255,255,255))
+# 创建Font对象
+font = ImageFont.truetype(r'D:\software\xunlei\Thunder\Program\resources\app\plugins\VipPayCenter\1.1.1\_nuxt\fonts\65e885f.ttf',36)
+#创建Draw对象
+draw = ImageDraw.Draw(image)
+#填充每个像素
+for x in range(width):
+    for y in range(height):
+        draw.point((x,y),fill=rndColor1())
+#输出文字
+for t in range(4):
+    draw.text((60*t + 10,10),rndChar(),font=font,fill=rndColor2())
+# 模糊
+image = image.filter(ImageFilter.BLUR)
+image.save('code.jpg','jpeg')
+
+#request
+import requests
+r = requests.get('https://www.douban.com/')  #豆瓣首页
+print(r.status_code)
+print(r.text)
+# psutil 获取系统信息
+import psutil
+print('CPU逻辑数量：',psutil.cpu_count())
+print('CPU物理核心：',psutil.cpu_count(logical=False))
+print('统计CPU的用户/系统/空闲时间：',psutil.cpu_times())
+# 模拟top命令刷新CPU使用率
+for x in range(2):
+    print('刷新CPU使用率:\n',psutil.cpu_percent(interval=1,percpu=True))
+print('获取物理内存：\n',psutil.virtual_memory())
+print('获取交换内存：\n',psutil.swap_memory())
+print('获取磁盘分区信息:\n',psutil.disk_partitions())
+print('获取网络读写字节/包的个数：\n',psutil.net_io_counters())
+print('获取网络接口信息：\n',psutil.net_if_addrs())
+print('获取当前网络连接信息：\n',psutil.net_connections())
+print('获取所有进程ID：\n',psutil.pids())
+p = psutil.Process(900)
+print('获取进程号为900的进程名:',p.name())
+print('获取进程号为900的进程exe路径：',p.exe())
+# print('获取进程号为900的进程工作目录：',p.cwd())
+# print('获取进程号为900的进程启动命令行：',p.cmdline())
+# print('获取进程号为900的父进程ID：',p.ppid())
+print('获取进程号为900的状态：',p.status())
+# print('获取进程号为900的进程用户名：',p.username())
+print('获取进程号为900的进程创建时间：',p.create_time())
+# print('获取进程号为900的进程终端',p.terminate())
+print('获取进程号为900的CPU使用时间',p.cpu_times())
+print('获取进程号为900的使用内存：',p.memory_info())
+# print('获取进程号为900的打开文件：',p.open_files())
+print('获取进程号为900的相关网络连接：',p.connections())
+print('获取进程号为900的线程数量',p.num_threads())
+print('获取进程号为900的所有线程信息：',p.threads())
+# print('获取进程号为900的进程环境变量：',p.environ())
+print('模拟出ps命令的效果：',psutil.test())
