@@ -1,0 +1,24 @@
+from email.mime.multipart import MIMEMultipart
+from  email.mime.text import MIMEText
+import smtplib
+msg_from='840806506@qq.com' #发送方邮箱
+passwd = 'zpehxrkscmjsbfbh'  #密码是QQ邮箱授权码
+to = ['m18797817002@163.com'] #接收方邮箱
+#设置邮件内容
+# MIMEMultipart类可以放任何内容
+msg = MIMEMultipart()
+conntent = "这个是字符串"
+#把内容加进去
+msg.attach(MIMEText(conntent,'plain','utf-8'))
+# 设置邮件主
+msg['Subject']="这又是一个主题邮件"
+#发送方信息
+msg['From']=msg_from
+#开始发送
+# 通过SSL方式发送。服务器地址和端口
+s = smtplib.SMTP_SSL("smtp.qq.com",465)
+#登录邮箱
+s.login(msg_from,passwd)
+#开始发送
+s.sendmail(msg_from,to,msg.as_string())
+print("邮件发送成功")
