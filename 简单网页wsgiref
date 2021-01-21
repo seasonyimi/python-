@@ -1,0 +1,16 @@
+test3.py
+def appilcation(envision,start_response):
+    start_response('200 0K',[('Content-Type','text-html')])
+    boby = '<h1>Hello,%s!</h1>' % (envision['PATH_INFO'][1:] or 'web')
+    return [boby.encode('utf-8')]
+    
+test4.py
+# WSGI是服务器程序与应用程序之间约定的标准，规定了双方按照什么样的接口，提供什么功能，以便以最小的代价实现两者的配合使用
+from wsgiref.simple_server import make_server
+from seven.test3 import appilcation
+
+#创建一个服务器，IP地址为空，端口是8000，处理函数是application
+httpd = make_server('',8000,appilcation)
+print('Serving HTTP on port 8000...')
+#开始监听HTTP请求
+httpd.serve_forever()
