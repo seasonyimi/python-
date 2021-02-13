@@ -1,0 +1,16 @@
+import time
+import asyncio
+
+# 定义异步函数
+async def hello():
+    asyncio.sleep(1)
+    print('Hello World:%s' % time.time())
+
+def run():
+    for i in range(5):
+        loop.run_until_complete(hello())
+# async def 用来定义异步函数，其内部有异步操作。每个线程有一个事件循环，主线程调用asyncio.get_event_loop()时会创建事件循环
+# 你需要把异步的任务丢给这个循环的run_until_complete()方法，事件循环会安排协同程序的执行。
+loop = asyncio.get_event_loop()
+if __name__ =='__main__':
+    run()
